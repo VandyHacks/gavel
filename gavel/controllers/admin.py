@@ -143,8 +143,6 @@ def item_patch():
         item.description = request.form['description']
     if 'category' in request.form:
         item.category = request.form['category']
-    print(item.name)
-    print(item.category)
     db.session.commit()
     return redirect(url_for('item_detail', item_id=item.id))
 
