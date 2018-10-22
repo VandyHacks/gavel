@@ -14,6 +14,8 @@ import xlrd
 
 ALLOWED_EXTENSIONS = set(['csv', 'xlsx', 'xls'])
 
+selected_filter = 'No filter'
+
 @app.route('/admin/')
 @utils.requires_auth
 def admin():
@@ -37,16 +39,38 @@ def admin():
                 skipped[i.id] = skipped.get(i.id, 0) + 1
     # settings
     setting_closed = Setting.value_of(SETTING_CLOSED) == SETTING_TRUE
+
+    filters = []
+    filtered_items = []
+    for item in items:
+        categories = item.category.split('|')
+        for category in categories:
+            category = category.strip()
+            if category not in filters:
+                filters.append(category)
+            if category == selected_filter or selected_filter == 'No filter':
+                if item not in filtered_items:
+                    filtered_items.append(item)
+
     return render_template(
         'admin.html',
         annotators=annotators,
         counts=counts,
         item_counts=item_counts,
         skipped=skipped,
-        items=items,
+        items=filtered_items,
         votes=len(decisions),
         setting_closed=setting_closed,
+        filters=filters,
+        selected_filter=selected_filter
     )
+
+@app.route('/admin/filter', methods=['POST'])
+@utils.requires_auth
+def filter():
+    global selected_filter
+    selected_filter = request.form['category_filter']
+    return redirect(url_for('admin'))
 
 @app.route('/admin/item', methods=['POST'])
 @utils.requires_auth
@@ -57,8 +81,8 @@ def item():
         if data:
             # validate data
             for index, row in enumerate(data):
-                if len(row) != 3:
-                    return utils.user_error('Bad data: row %d has %d elements (expecting 3)' % (index + 1, len(row)))
+                if len(row) != 4:
+                    return utils.user_error('Bad data: row %d has %d elements (expecting 4)' % (index + 1, len(row)))
             for row in data:
                 _item = Item(*row)
                 db.session.add(_item)
@@ -87,7 +111,6 @@ def item():
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
 
 def parse_upload_form():
     f = request.files.get('file')
@@ -118,6 +141,10 @@ def item_patch():
         item.name = request.form['name']
     if 'description' in request.form:
         item.description = request.form['description']
+    if 'category' in request.form:
+        item.category = request.form['category']
+    print(item.name)
+    print(item.category)
     db.session.commit()
     return redirect(url_for('item_detail', item_id=item.id))
 

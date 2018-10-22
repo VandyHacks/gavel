@@ -21,11 +21,27 @@
     <h2>Projects</h2>
   </div>
   <div class="info">
+    <form action="/admin/filter" method="post">
+      <label for="category_filter">Filter by Category: </label>
+      <select name="category_filter">
+        <option value="No filter">No filter</option>
+        {% for filter in filters %}
+        {% if filter %}
+        <option value="{{ filter }}" {% if filter == selected_filter %} selected {% endif %}>{{ filter }}</option>
+        {% endif %}
+        {% endfor %}
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+      </select>
+      <button type="submit">Filter</button>
+    </form>
+    <br />
+    <br />
     <table id="items">
       <thead>
         <tr>
           <th data-sort-method="number">Id</th>
           <th data-sort-method="caseInsensitiveSort">Name</th>
+          <th data-sort-method="caseInsensitiveSort">Category</th>
           <th data-sort-method="caseInsensitiveSort">Location</th>
           <th data-sort-method="caseInsensitiveSort">Description</th>
           <th class="sort-default" data-sort-method="number" data-sort-order="desc">Mu</th>
@@ -43,6 +59,7 @@
         <tr class="{{ 'disabled' if not item.active else 'prioritized' if item.prioritized else '' }}">
           <td><a href="{{ url_for('item_detail', item_id=item.id) }}" class="colored">{{ item.id }}</a></td>
           <td>{{ item.name | safe }}</td>
+          <td>{{ item.category }}</td>
           <td>{{ item.location | safe }}</td>
           <td class="preserve-formatting">{{ item.description | safe }}</td>
           <td>{{ item.mu | round(4) }}</td>
@@ -143,7 +160,7 @@
     <h2>Add Projects</h2>
   </div>
   <div class="info">
-    <p>Add name, location, description (CSV format)</p>
+    <p>Add name, category, location, description (CSV format)</p>
     <textarea name="data" form="item_form"></textarea>
     <form action="/admin/item" method="post" id="item_form" enctype="multipart/form-data">
       <div class="upload-container">

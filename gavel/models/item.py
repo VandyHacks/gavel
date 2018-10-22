@@ -9,6 +9,7 @@ view_table = db.Table('view',
 
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True, nullable=False)
+    category = db.Column(db.Text, nullable=False)
     name = db.Column(db.Text, nullable=False)
     location = db.Column(db.Text, nullable=False)
     description = db.Column(db.Text, nullable=False)
@@ -19,8 +20,9 @@ class Item(db.Model):
     mu = db.Column(db.Float)
     sigma_sq = db.Column(db.Float)
 
-    def __init__(self, name, location, description):
+    def __init__(self, name, category, location, description):
         self.name = name
+        self.category = category.strip()
         self.location = location
         self.description = description
         self.mu = crowd_bt.MU_PRIOR

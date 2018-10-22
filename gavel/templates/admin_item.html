@@ -23,6 +23,18 @@
         </td>
       </tr>
       <tr>
+        <th>Category</th>
+        <td>
+          <form action="/admin/item_patch" method="post">
+            <input type="text" name="category" value="{{ item.category | safe }}">
+            <input type="submit" name="action" value="Update" class="neutral">
+            <input type="hidden" name="item_id" value="{{ item.id }}">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+          </form>
+        </td>
+      </tr>
+      <tr>
+      <tr>
         <th>Location</th>
         <td>
           <form action="/admin/item_patch" method="post">
