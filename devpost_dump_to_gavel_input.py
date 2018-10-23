@@ -1,11 +1,8 @@
- # This script aggregates and retains the necessary parts of the devpost csv
- # dump to be able to input it into gavel
- #
- # Run with the file name of the devpost csv passed in as an arg
- # (should be in same directory)
+ # Aggregates and retains the necessary parts of the devpost csv dump to be
+ # able to input it into gavel
+
 
 import csv
-import sys
 
 projects = []
 
@@ -16,29 +13,18 @@ def find_project(name):
             return project
     return None
 
-def main():
-    if (len(sys.argv) < 2):
-        print("File name of devpost csv must be passed in!")
-        sys.exit()
+def transform(devpost_dump):
+    for entry in devpost_dump[1:]:
+        project = find_project(entry[1])
+        if project is not None:
+            project['category'] = project['category'] + " | " + entry[0]
+        else:
+            projects.append({
+                'name': entry[1],
+                'category': entry[0],
+            })
 
-    file_name = sys.argv[1]
-    with open(file_name) as devpost_file:
-        reader = csv.reader(devpost_file)
-        next(reader)
-        for line in reader:
-            project = find_project(line[1])
-            if project is not None:
-                project['category'] = project['category'] + " | " + line[0]
-            else:
-                projects.append({
-                    'name': line[1],
-                    'category': line[0],
-                })
-
-    with open('gavel-input.csv', 'w') as f:
-        writer = csv.writer(f)
-        for project in projects:
-            writer.writerow([project["name"], project["category"], " ", " "])
-
-if __name__ == "__main__":
-    main();
+    gavel_input = []
+    for project in projects:
+        gavel_input.append([project["name"], project["category"], " ", " "])
+    return gavel_input

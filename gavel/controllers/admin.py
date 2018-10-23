@@ -1,3 +1,4 @@
+import devpost_dump_to_gavel_input
 from gavel import app
 from gavel.models import *
 from gavel.constants import *
@@ -77,7 +78,7 @@ def filter():
 def item():
     action = request.form['action']
     if action == 'Submit':
-        data = parse_upload_form()
+        data = devpost_dump_to_gavel_input.transform(parse_upload_form())
         if data:
             # validate data
             for index, row in enumerate(data):
