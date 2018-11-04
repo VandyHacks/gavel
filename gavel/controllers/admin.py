@@ -85,6 +85,7 @@ def item():
                 if len(row) != 4:
                     return utils.user_error('Bad data: row %d has %d elements (expecting 4)' % (index + 1, len(row)))
             for row in data:
+                print(row)
                 _item = Item(*row)
                 db.session.add(_item)
             db.session.commit()

@@ -24,7 +24,7 @@ class Item(db.Model):
         self.name = name
         self.category = category.strip()
         location = location.strip()
-        '''
+
         print('location' + location)
         print('id' + str(id))
         print ('selfid' + str(self.id))
@@ -33,7 +33,7 @@ class Item(db.Model):
             print('loc2' + self.location)
         else:
             self.location = str(id)
-            print('loc3' + self.location)'''
+            print('loc3' + self.location)
         self.location = 'hello'
         self.description = description
         self.mu = crowd_bt.MU_PRIOR
