@@ -23,6 +23,7 @@ class Item(db.Model):
     def __init__(self, name, category, location, description):
         self.name = name
         self.category = category.strip()
+        location = location.strip()
         print('location' + location)
         if location is not None and len(location) > 0:
             self.location = location
