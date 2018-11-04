@@ -5,4 +5,5 @@
 
 if __name__ == '__main__':
     from gavel.models import db
+    # db.drop_all()
     db.create_all()

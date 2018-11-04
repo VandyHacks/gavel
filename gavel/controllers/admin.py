@@ -88,6 +88,14 @@ def item():
                 print(row)
                 _item = Item(*row)
                 db.session.add(_item)
+                db.session.flush()
+                db.session.refresh(_item)
+                # print('row id', _item.id)
+
+                _item.location = _item.id
+
+                
+
             db.session.commit()
     elif action == 'Prioritize' or action == 'Cancel':
         item_id = request.form['item_id']

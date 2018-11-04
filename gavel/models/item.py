@@ -28,13 +28,21 @@ class Item(db.Model):
         print('location' + location)
         print('id' + str(id))
         print ('selfid' + str(self.id))
-        if location is not None and len(location) > 0:
-            self.location = location
-            print('loc2' + self.location)
-        else:
-            self.location = str(id)
-            print('loc3' + self.location)
-        self.location = 'hello'
+        
+        # self.location = id
+        self.location = 'Melvin Lu'
+        
+
+        # if location is not None and len(location) > 0:
+        #     self.location = location
+        #     print('loc2' + self.location)
+        # else:
+        #     self.location = id 
+            # str(id)
+            # print('loc3' + self.location)
+
+        # self.location = 'Melvin Lu'
+
         self.description = description
         self.mu = crowd_bt.MU_PRIOR
         self.sigma_sq = crowd_bt.SIGMA_SQ_PRIOR
