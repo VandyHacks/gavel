@@ -25,13 +25,13 @@ class Item(db.Model):
         self.category = category.strip()
         location = location.strip()
         print('location' + location)
-        print('id' + id)
+        print('id' + str(id))
         print ('selfid' + self.id)
         if location is not None and len(location) > 0:
             self.location = location
             print('loc2' + self.location)
         else:
-            self.location = id
+            self.location = str(id)
             print('loc3' + self.location)
         self.description = description
         self.mu = crowd_bt.MU_PRIOR
