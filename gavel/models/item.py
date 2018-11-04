@@ -23,7 +23,10 @@ class Item(db.Model):
     def __init__(self, name, category, location, description):
         self.name = name
         self.category = category.strip()
-        self.location = location
+        if location and len(location) > 0:
+            self.location = location
+        else:
+            self.location = self.id
         self.description = description
         self.mu = crowd_bt.MU_PRIOR
         self.sigma_sq = crowd_bt.SIGMA_SQ_PRIOR
