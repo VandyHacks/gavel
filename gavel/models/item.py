@@ -26,7 +26,7 @@ class Item(db.Model):
         location = location.strip()
         print('location' + location)
         print('id' + str(id))
-        print ('selfid' + self.id)
+        print ('selfid' + str(self.id))
         if location is not None and len(location) > 0:
             self.location = location
             print('loc2' + self.location)
