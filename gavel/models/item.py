@@ -23,10 +23,13 @@ class Item(db.Model):
     def __init__(self, name, category, location, description):
         self.name = name
         self.category = category.strip()
+        print('location' + location)
         if location is not None and len(location) > 0:
             self.location = location
+            print('loc2' + self.location)
         else:
             self.location = id
+            print('loc3' + self.location)
         self.description = description
         self.mu = crowd_bt.MU_PRIOR
         self.sigma_sq = crowd_bt.SIGMA_SQ_PRIOR
